@@ -62,7 +62,7 @@ jobs:
       - name: Deploy
         run: |
           echo "Deploying..."
-          docker-compose up -d
+          docker compose up -d
           docker ps
 
   clear:
@@ -76,7 +76,7 @@ jobs:
       - name: Clear
         run: |
           echo "Cleaning up..."
-          docker-compose down
+          docker compose down
           docker system prune -f
           echo "Cleanup complete"
 
