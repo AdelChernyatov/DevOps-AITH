@@ -121,8 +121,6 @@ services:
         condition: service_started
     volumes:
       - ${AIRFLOW_PROJ_DIR:-.}/spark-logs/worker:/opt/spark/logs
-    ports:
-      - "7000:7000"
     command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
     restart: always
 
@@ -264,6 +262,33 @@ services:
       _AIRFLOW_WWW_USER_PASSWORD: ${_AIRFLOW_WWW_USER_PASSWORD:-airflow}
       _PIP_ADDITIONAL_REQUIREMENTS: ''
     user: "0:0"
+
+  loki: # сервис-обработчик логов
+    image: grafana/loki:3.2.0
+    container_name: loki # имя контейнера Loki, важно для последующих шагов
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml # запуск с дефолтным конфигом
+
+  alloy: # сервис-сборщик логов
+    image: grafana/alloy:v1.5.1
+    volumes:
+      - ./logs:/opt/airflow/logs
+      - ./spark-logs:/opt/spark/logs
+      - ./alloy.conf:/etc/alloy/config.alloy
+    command:
+      - run
+      - --server.http.listen-addr=0.0.0.0:12345
+      - /etc/alloy/config.alloy
+
+  grafana: # сервис визуализации
+    image: grafana/grafana:11.2.0
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
 
 volumes:
   postgres-db-volume:
