@@ -105,6 +105,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    volumes:
+      - ${AIRFLOW_PROJ_DIR:-.}/spark-logs/master:/opt/spark/logs
     ports:
       - "4040:8080"
       - "7077:7077"
@@ -117,6 +119,8 @@ services:
     depends_on:
       spark-master:
         condition: service_started
+    volumes:
+      - ${AIRFLOW_PROJ_DIR:-.}/spark-logs/worker:/opt/spark/logs
     ports:
       - "7000:7000"
     command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077

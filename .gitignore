@@ -1,4 +1,5 @@
 logs/
+spark-logs/
 config/airflow.cfg
 __pycache__/
 *.pyc
