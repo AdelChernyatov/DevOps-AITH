@@ -1,19 +1,12 @@
 # CHANGES
 
-## Лабораторная работа №3: GitLab CI/CD
+## Лабораторная работа №4: Logs and metric collection
 
 - Добавлены:
   Файлы:
-  - файл changes.md с отраженными изменениями;
-  - папка с .github/workflows с файлом gitlab3-ci.yml для настройки CI/CD пайплайна;
-
+  - alloy.conf
+  - prometheus.yml
   Изменения в проекте:
-  - Автоматическая проверка наличия папок `dags/` и `spark/` при каждом push
-  - Cборка Docker-образа 
-  - Автоматический деплой на ветках `main`, `master`, `develop`
-  - Запуск с выбором действий: `deploy` или `clear`
-  - Команда `clear` для очистки Docker-окружения
-  
+  - Добавлены сервисы: Loki, Grafana, Prometheus, Alloy
 - Выводы:
-  - Все этапы пайплайна test, build, deploy успешно выполняются
-  - Очистка ресурсов выделена в отдельную команду
+  - 
