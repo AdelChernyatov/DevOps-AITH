@@ -5,3 +5,13 @@ scrape_configs:
   - job_name: 'airflow' # по этому имени потом будем "искать" нужный индекс
     static_configs:
       - targets: ['statsd-exporter:9102'] # Prometheus-метрики Airflow через StatsD exporter
+
+  - job_name: 'spark-master'
+    metrics_path: /metrics/master/prometheus
+    static_configs:
+      - targets: ['spark-master:8080']
+
+  - job_name: 'spark-worker'
+    metrics_path: /metrics/worker/prometheus
+    static_configs:
+      - targets: ['spark-worker:8081']

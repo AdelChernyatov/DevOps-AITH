@@ -109,8 +109,11 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    environment:
+      SPARK_CONF_DIR: /opt/spark/conf
     volumes:
       - ${AIRFLOW_PROJ_DIR:-.}/spark-logs/master:/opt/spark/logs
+      - ${AIRFLOW_PROJ_DIR:-.}/spark-conf:/opt/spark/conf
     ports:
       - "4040:8080"
       - "7077:7077"
@@ -123,8 +126,11 @@ services:
     depends_on:
       spark-master:
         condition: service_started
+    environment:
+      SPARK_CONF_DIR: /opt/spark/conf
     volumes:
       - ${AIRFLOW_PROJ_DIR:-.}/spark-logs/worker:/opt/spark/logs
+      - ${AIRFLOW_PROJ_DIR:-.}/spark-conf:/opt/spark/conf
     command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
     restart: always
 
